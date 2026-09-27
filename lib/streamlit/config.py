@@ -429,11 +429,17 @@ def _global_development_mode() -> bool:
     This option defaults to True if and only if Streamlit wasn't installed
     normally.
     """
+    streamlit_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    is_true_dev = (
+        os.path.isdir(os.path.join(streamlit_dir, "frontend"))
+        or os.path.isfile(os.path.join(streamlit_dir, "package.json"))
+    )
     return (
         not env_util.is_pex()
         and "site-packages" not in __file__
         and "dist-packages" not in __file__
         and "__pypackages__" not in __file__
+        and is_true_dev
     )
 
 
